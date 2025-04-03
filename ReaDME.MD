@@ -1,0 +1,7 @@
+## 使用方法
+
+下载插件 并 重命名为`SitMap`,放入`usr/plugins`目录下
+
+后台启用即可
+
+访问 /sitemap.xml 即可查看
