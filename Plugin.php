@@ -1,11 +1,11 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
- * SiteMap
+ * SiteMap 插件,开箱即用,路由地址为 /sitemap.xml
  * 
  * @package SiteMap
  * @author 老孙
- * @version 1.0.1
+ * @version 1.0.2
  * @link https://www.imsun.org
  */
 class SiteMap_Plugin implements Typecho_Plugin_Interface
@@ -112,19 +112,9 @@ class SiteMap_Plugin implements Typecho_Plugin_Interface
             $type = $row['type'];
             
             if ($type == 'post') {
-                // 构建自定义格式的 URL
-                $path = str_replace(
-                    array('{year}', '{month}', '{day}', '{cid}'),
-                    array(
-                        date('Y', $row['created']),
-                        date('m', $row['created']),
-                        date('d', $row['created']),
-                        $row['cid']
-                    ),
-                    '/{year}{month}{day}{cid}/'
-                );
-                
-                $row['pathinfo'] = $path;
+                // 使用Typecho的路由系统获取正确的URL
+                $routeExists = (NULL != Typecho_Router::get($type));
+                $row['pathinfo'] = $routeExists ? Typecho_Router::url($type, $row) : '#';
             } else {
                 // 对于页面，保持原有的路由方式
                 $routeExists = (NULL != Typecho_Router::get($type));
